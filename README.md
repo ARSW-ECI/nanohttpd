@@ -35,7 +35,7 @@ mvn exec:java -Dexec.mainClass="edu.eci.arsw.viewgen.models.reader.SimpleMetadat
 ###Parte 3.
 Ahora, va a modificar la clase com.example.App, en particular su método 'serve'. Esta clase es parte de la implementación de un servidor HTTP básico, y su objetivo es lograr que en el mismo se interprete y se publique una vista HTML a partir de los metadatos provistos en una clase Java.
 
-1. Verifique el funcionamiento actual del programa con:
+1. Verifique el funcionamiento actual del programa (DESDE LA CARPETA webserver) con:
 
 	```bash
 mvn exec:java -Dexec.mainClass="com.example.App" -Dexec.args="argumento1"
