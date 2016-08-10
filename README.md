@@ -1,55 +1,54 @@
-## NanoHTTPD – a tiny web server in Java
+##Escuela Colombiana de Ingeniería
+###Arquitecturas de Software
 
-*NanoHTTPD* is a light-weight HTTP server designed for embedding in other applications, released under a Modified BSD licence.
+###Laboratorio - Metaprogramación y Reflexividad
 
-It is being developed at Github and uses Apache Maven for builds & unit testing:
+####Nota: Ejercicio basado en una rama del proyecto [NanoHTTPD](https://github.com/NanoHttpd/nanohttpd)
 
- * Build status: [![Build Status](https://api.travis-ci.org/NanoHttpd/nanohttpd.png)](https://travis-ci.org/NanoHttpd/nanohttpd)
- * Coverage Status: [![Coverage Status](https://coveralls.io/repos/NanoHttpd/nanohttpd/badge.svg)](https://coveralls.io/r/NanoHttpd/nanohttpd)
- * Current central released version: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.nanohttpd/nanohttpd/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.nanohttpd/nanohttpd)
+En este ejercicio se va a desarrollar una prueba de concepto muy simple, de cómo funcionan frameworks MVC como [Vaadin](https://vaadin.com/home), los cuales generan -de forma dinámica- vistas Web a partir de especificaciones(metadatos) hechos en clases Java.
 
-## Quickstart
+_NOTA 1: debe abrir una cuenta en GitLab o en BitBucket, crear un repositorio privado, compartirlo con su compañero (si lo tiene) y en el mismo ir llevando el avance del laboratorio. NO USE GITHUB, ya que dejaría sus avances públicos._
 
-A sample HTTPD implementation is included in `webserver/src/main/java/com/example/App.java`:
-```java
-    package com.example;
-    
-    import java.io.IOException;
-    import java.util.Map;
-    
-    import fi.iki.elonen.NanoHTTPD;
-    
-    public class App extends NanoHTTPD {
-    
-        public App() throws IOException {
-            super(8080);
-            start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
-            System.out.println("\nRunning! Point your browsers to http://localhost:8080/ \n");
-        }
-    
-        public static void main(String[] args) {
-            try {
-                new App();
-            } catch (IOException ioe) {
-                System.err.println("Couldn't start server:\n" + ioe);
-            }
-        }
-    
-        @Override
-        public Response serve(IHTTPSession session) {
-            String msg = "<html><body><h1>Hello server</h1>\n";
-            Map<String, String> parms = session.getParms();
-            
-             msg += "<p>Hello, World!</p>";
-            
-            return newFixedLengthResponse(msg + "</body></html>\n");
-        }
-    }
+_NOTA 2: el uso de GIT NO ES OPCIONAL, el proyecto entregado debe mostrar evidencia de su uso con los históricos de los commits._
+
+
+
+###Parte 1.
+
+
+1. Clone este proyecto, y abra el proyecto Maven que está en la ruta nanohttpd/webserver.
+2. Revise la documentación del [API Reflection de Java](https://docs.oracle.com/javase/tutorial/reflect/class/index.html).
+3. Con lo anterior, modifique el programa SimpleMetadataReader para que, con el nombre de clase enviado como argumento (asignado a la variable className):
+	* Haga introspección de dicha clase, e imprima por pantalla los nombres de los métodos disponibles.
+	* Instancie la clase, e invoque sólo aquellos métodos que retornen un objeto String. Imprima por pantalla dicha cadena.
+4. Pruebe el funcionamiento de lo antes hecho ejecutando SimpleMetadataReader, pasando como argumento la clase SampleViewMetadata (la cual ya está dentro de los fuentes del proyecto):
+
+	```bash
+mvn exec:java -Dexec.mainClass="edu.eci.arsw.viewgen.models.reader.SimpleMetadataReader" -Dexec.args="edu.eci.arsw.viewgen.models.SampleViewMetadata"
 ```
 
-To compile and run this server:
- 
-    mvn compile
-    mvn exec:java -Dexec.mainClass="com.example.App" -Dexec.args="arg1"
-    
-If it started ok, point your browser at <http://localhost:8080/> and enjoy a web server that asks your name and replies with a greeting. 
+###Parte 2.
+
+1. Ajuste el programa anterior para que, cuando imprima los nombres de los métodos, indique cuales tienen la anotación @RelativePosition, y qué valor tienen sus propiedades. Puede revisar las características de esta anotación revisando los fuentes de edu.eci.arsw.viewgen.annotations.RelativePosition.
+2. Verifique los resultados de la misma manera.
+
+###Parte 3.
+Ahora, va a modificar la clase com.example.App, en particular su método 'serve'. Esta clase es parte de la implementación de un servidor HTTP básico, y su objetivo es lograr que en el mismo se interprete y se publique una vista HTML a partir de los metadatos provistos en una clase Java.
+
+1. Verifique el funcionamiento actual del programa con:
+
+	```bash
+mvn exec:java -Dexec.mainClass="com.example.App" -Dexec.args="argumento1"
+```
+2. Modifique la clase App para que, en lugar de mostrar el 'Hola mundo!' dinámicamente interprete los metadatos provistos por la clase dada como argumento y genere una vista HTML que corresponda a los mismos. Por ahora, haga que sólo se muestre el contenido generado por aquellos métodos que tengan la anotación @RelativePosition, de manera que:
+	* Se agregue en la vista el texto generado por el método que tiene la anotación, enmarcado en un recuadro con el ancho, alto y tipo de recuadros descritos como propiedad de dicha anotación [ver ejemplo de posicionamiento relativo con CSS](http://www.w3schools.com/css/tryit.asp?filename=trycss_position_absolute).
+
+3. Verifique que la vista sea generada correctamente.
+
+###Parte 4.
+
+1. Cree una nueva anotación de tipo AbsolutePosition, con la cual se puedan marcar aquellas propiedades de la clase que se mostrarán en un recuadro con posición absoluta [(ver ejemplo de w3schools)](http://www.w3schools.com/css/tryit.asp?filename=trycss_position_absolute), y defina para ésta, las propiedades que sean relevantes.
+2. Agregue la funcionalidad de mostrar [listas de elementos HTML](http://www.w3schools.com/html/html_lists.asp) para aquellos métodos que retornen Listas de Cadenas, y que tengan las anotaciones @AbsolutePosition o @RelativePosition.
+3. Modifique la clase que tiene los metadatos (SampleViewMetadata) para que combine propiedades de cadenas y con listas de cadenas, ubicadas de forma absoluta o relativa.
+4. Verifique la funcionalidad.
+
