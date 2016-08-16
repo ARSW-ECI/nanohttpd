@@ -49,6 +49,6 @@ mvn exec:java -Dexec.mainClass="com.example.App" -Dexec.args="argumento1"
 
 1. Cree dos nuevas anotaciones de tipo AbsolutePosition y FixedPosition, con la cual se puedan marcar aquellas propiedades de la clase que se mostrarán en un recuadro con posición absoluta/fija [(ver ejemplo de w3schools)](http://www.w3schools.com/css/css_positioning.asp), y defina para éstas, las propiedades que sean relevantes.
 2. Agregue la funcionalidad de mostrar [listas de elementos HTML](http://www.w3schools.com/html/html_lists.asp) para aquellos métodos que retornen Listas de Cadenas, y que tengan las anotaciones @AbsolutePosition o @RelativePosition.
-3. Modifique la clase que tiene los metadatos (SampleViewMetadata) para que combine propiedades de cadenas y con listas de cadenas, ubicadas de forma absoluta o relativa.
+3. Modifique la clase que tiene los metadatos (SampleViewMetadata) para que ahora incluya algunas propiedades de tipo Cadena o Lista de Cadena, y use las anotaciones @AbsolutePosition/@FixedPosition.
 4. Verifique la funcionalidad.
 
