@@ -52,3 +52,12 @@ mvn exec:java -Dexec.mainClass="com.example.App" -Dexec.args="argumento1"
 3. Modifique la clase que tiene los metadatos (SampleViewMetadata) para que ahora incluya algunas propiedades de tipo Cadena o Lista de Cadena, y use las anotaciones @AbsolutePosition/@FixedPosition.
 4. Verifique la funcionalidad.
 
+
+####Criterios de evaluación.
+
+1. Funcionalidad.
+	* El framework interpreta correctamente cualquier clase dada como argumento, generando una vista acorde a los metadatos de dicha clase.
+	* El framework muestra una lista de elementos HTML (<ul>) cuando la clase de los metadatos tiene un método que retorna una lista de cadenas.
+	* El framework ubica los contenidos de forma consecuente con los metadatos correspondientes (@Relative, @Absolute, etc).
+2. Calidad de código.
+	* Las operaciones de Reflexividad NO DEBEN verificar coincidencias de tipos a partir de su sombre (e.g. if (annot.getClass().toString().contains("AnotacionY)).
